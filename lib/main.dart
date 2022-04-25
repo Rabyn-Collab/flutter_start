@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_start/screens/home_screen.dart';
+import 'package:flutter_projects_start/provider/counter_provider.dart';
+import 'package:flutter_projects_start/screens/main_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 
 
 void main(){
-  runApp(Home());
+  runApp(ProviderScope(child: Home()));
 }
 
 
@@ -15,10 +17,74 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
        debugShowCheckedModeBanner: false,
-      home:  HomeScreen(),
+      home:  Counter(),
     );
   }
 }
+
+
+
+
+
+class Counter extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    print('rebuild');
+    return Scaffold(
+        body: SafeArea(
+          child: Container(
+            child: Consumer(
+              builder: (context, ref, child) {
+                final number = ref.watch(counterProvider).number;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('$number', style: TextStyle(fontSize: 50),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                             ref.read(counterProvider).increment();
+                            },
+                            child: Text('add')
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              ref.read(counterProvider).decrement();
+                            },
+                            child: Text('minus')
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              }
+            ),
+          ),
+        )
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
