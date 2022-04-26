@@ -43,58 +43,94 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-        body:  SafeArea(
+        body:   SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-               Container(
-                 height: 200,
-                 width: double.infinity,
-                 child: Image.network('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfDB8MHx8&auto=format&fit=crop&w=500&q=60', fit: BoxFit.cover,),
-               ),
-              SizedBox(height: 20,),
-                Container(
-                  height: 250,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: books.length,
-                      itemBuilder: (context, index){
-                      final book =books[index];
-                       return Container(
-                         height: height,
-                         width: 370,
-                         child: Row(
-                           children: [
-                             ClipRRect(
-                                 borderRadius: BorderRadius.circular(15),
-                                 child: Image.network(book.imageUrl)),
-                             SizedBox(width: 10,),
-                             Expanded(
-                               child: Column(
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                 children: [
-                                   Text(book.title),
-                                   SizedBox(height: 10,),
-                                   Text(book.overview,
-                                     maxLines: 10,
-                                     style: TextStyle(), overflow: TextOverflow.ellipsis, textAlign: TextAlign.justify),
-                                   Text(book.star),
-                                   Text(book.genre)
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                 Container(
+                   height: 200,
+                   width: double.infinity,
+                   child: Image.network('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfDB8MHx8&auto=format&fit=crop&w=500&q=60', fit: BoxFit.cover,),
+                 ),
+                SizedBox(height: 20,),
+                  Container(
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: books.length,
+                        itemBuilder: (context, index){
+                        final book =books[index];
+                         return Container(
+                           height: height,
+                           width: 370,
+                           child: Row(
+                             children: [
+                               ClipRRect(
+                                   borderRadius: BorderRadius.circular(15),
+                                   child: Image.network(book.imageUrl)),
+                               SizedBox(width: 10,),
+                               Expanded(
+                                 child: Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Text(book.title),
+                                     SizedBox(height: 10,),
+                                     Text(book.overview,
+                                       maxLines: 10,
+                                       style: TextStyle(), overflow: TextOverflow.ellipsis, textAlign: TextAlign.justify),
+                                     Text(book.star),
+                                     Text(book.genre)
 
-                                 ],
-                               ),
-                             )
-                           ],
-                         ),
-                       );
-                      }
+                                   ],
+                                 ),
+                               )
+                             ],
+                           ),
+                         );
+                        }
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('You may also like', style: TextStyle(fontSize: 20),)),
+                  ),
+                  Container(
+                    height: 260,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: books.length,
+                        itemBuilder: (context, index){
+                          final book =books[index];
+                          return Container(
+                            margin: EdgeInsets.only(right: 10),
+                            width: 150,
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(book.imageUrl, fit: BoxFit.cover,)),
+                                Text(book.title),
+                                Text(book.genre)
+                              ],
+                            ),
+                          );
+                        }
+                    ),
+                  ),
 
-              ],
-            ),
-          )
+
+                  Image.asset('assets/images/joel-muniz-KodMXENNaas-unsplash.jpg')
+
+
+
+
+
+                ],
+              ),
+          ),
         )
     );
   }
