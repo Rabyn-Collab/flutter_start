@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/counter_provider.dart';
-import 'package:flutter_projects_start/screens/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 
 
-void main(){
+   Future<String> getData() async{
+     print('hello user');
+      await Future.delayed(Duration(seconds: 2));
+     print('hello user1');
+      throw Exception('some err');
+   }
+
+
+
+
+void main() async{
+     try{
+      final response = await getData();
+      print(response);
+     }catch (err){
+      print(err);
+     }
+
+
   runApp(ProviderScope(child: Home()));
 }
 
@@ -36,7 +53,7 @@ class Counter extends StatelessWidget {
           child: Container(
             child: Consumer(
               builder: (context, ref, child) {
-                final number = ref.watch(counterProvider).number;
+                final number = ref.watch(countStateNotify);
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -46,7 +63,7 @@ class Counter extends StatelessWidget {
                       children: [
                         TextButton(
                             onPressed: () {
-                             ref.read(counterProvider).increment();
+                             ref.read(countStateNotify.notifier).increment();
                             },
                             child: Text('add')
                         ),
