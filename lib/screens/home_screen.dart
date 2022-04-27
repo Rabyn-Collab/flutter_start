@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/models/book.dart';
+import 'package:flutter_projects_start/screens/detail_screen.dart';
+import 'package:get/get.dart';
 
 
 
@@ -61,31 +63,36 @@ class HomeScreen extends StatelessWidget {
                       itemCount: books.length,
                         itemBuilder: (context, index){
                         final book =books[index];
-                         return Container(
-                           height: height,
-                           width: 370,
-                           child: Row(
-                             children: [
-                               ClipRRect(
-                                   borderRadius: BorderRadius.circular(15),
-                                   child: Image.network(book.imageUrl)),
-                               SizedBox(width: 10,),
-                               Expanded(
-                                 child: Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     Text(book.title),
-                                     SizedBox(height: 10,),
-                                     Text(book.overview,
-                                       maxLines: 10,
-                                       style: TextStyle(), overflow: TextOverflow.ellipsis, textAlign: TextAlign.justify),
-                                     Text(book.star),
-                                     Text(book.genre)
+                         return InkWell(
+                           onTap: (){
+                            Get.to(() => DetailScreen(book), transition: Transition.rightToLeft);
+                           },
+                           child: Container(
+                             height: height,
+                             width: 370,
+                             child: Row(
+                               children: [
+                                 ClipRRect(
+                                     borderRadius: BorderRadius.circular(15),
+                                     child: Image.network(book.imageUrl)),
+                                 SizedBox(width: 10,),
+                                 Expanded(
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       Text(book.title),
+                                       SizedBox(height: 10,),
+                                       Text(book.overview,
+                                         maxLines: 10,
+                                         style: TextStyle(), overflow: TextOverflow.ellipsis, textAlign: TextAlign.justify),
+                                       Text(book.star),
+                                       Text(book.genre)
 
-                                   ],
-                                 ),
-                               )
-                             ],
+                                     ],
+                                   ),
+                                 )
+                               ],
+                             ),
                            ),
                          );
                         }
