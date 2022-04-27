@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_start/provider/news_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainScreen extends StatelessWidget {
 
@@ -7,23 +9,28 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            _buildContainer(Colors.blueGrey, 'hello user'),
-            _buildContainer(Colors.pink, 'something new'),
-          ],
-        ),
-      ),
+      child:  Consumer(
+        builder: (context, ref, child) {
+          final newsData = ref.watch(newsProvider);
+          return  newsData.when(
+              data: (data){
+                return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                    itemCount: data.length,
+                    itemBuilder: (context, index){
+                      return Text(data[index].summary);
+                    }
+                );
+              },
+              error: (err, stack) => Center(child: Text('$err')),
+              loading: (){
+                return Center(child: CircularProgressIndicator(),);
+              }
+          );
+        }
+      )
     ));
   }
 
-  Container _buildContainer(Color c, String label) {
-    return Container(
-      color: c,
-      height: 200,
-      width: 200,
-      child: Text(label),
-    );
-  }
+
 }

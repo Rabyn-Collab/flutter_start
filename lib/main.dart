@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_projects_start/provider/counter_provider.dart';
+import 'package:flutter_projects_start/screens/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 
-
-   Future<String> getData() async{
-     print('hello user');
-      await Future.delayed(Duration(seconds: 2));
-     print('hello user1');
-      throw Exception('some err');
-   }
-
+   //
+   // Future<String> getData() async{
+   //   print('hello user');
+   //    await Future.delayed(Duration(seconds: 2));
+   //   print('hello user1');
+   //    throw Exception('some err');
+   // }
 
 
 
 void main() async{
-     try{
-      final response = await getData();
-      print(response);
-     }catch (err){
-      print(err);
-     }
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.black
+    )
+  );
+     // try{
+     //  final response = await getData();
+     //  print(response);
+     // }catch (err){
+     //  print(err);
+     // }
 
 
   runApp(ProviderScope(child: Home()));
@@ -34,7 +40,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
        debugShowCheckedModeBanner: false,
-      home:  Counter(),
+      home:  MainScreen(),
     );
   }
 }
