@@ -3,4 +3,4 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
-final newsProvider = FutureProvider((ref) => NewsService.getNews(query: 'nasa'));
+final newsProvider = FutureProvider.family((ref,String query) => NewsService.getNews(query: query));
