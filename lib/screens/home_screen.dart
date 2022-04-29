@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/models/book.dart';
 import 'package:flutter_projects_start/screens/detail_screen.dart';
