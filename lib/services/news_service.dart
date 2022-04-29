@@ -31,6 +31,30 @@ class NewsService{
   }
 
 
+ static Future<List<News>> getDefaultNews() async{
+   final dio = Dio();
+   try{
+     await Future.delayed(Duration(seconds: 3));
+     final response = await dio.get(Api.baseUrl, queryParameters: {
+       'q': 'nasa',
+       'lang': 'en'
+     }, options: Options(
+         headers: {
+           'X-RapidAPI-Host': 'free-news.p.rapidapi.com',
+           'X-RapidAPI-Key': '89e53c72d7msh16aa8c041814a4cp1f3e79jsn333d7bcaf747'
+         }
+     ));
+
+     final data = (response.data['articles'] as List).map((e) => News.fromJson(e)).toList();
+     return data;
+   }on DioError catch (e){
+     print(e.message);
+     throw Exception(e.message);
+
+   }
+
+ }
+
 
 
 

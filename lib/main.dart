@@ -17,11 +17,11 @@ import 'package:get/get.dart';
 
 
 void main() async{
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.black
-    )
-  );
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   SystemUiOverlayStyle(
+  //     statusBarColor: Colors.black
+  //   )
+  // );
      // try{
      //  final response = await getData();
      //  print(response);

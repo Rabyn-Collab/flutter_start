@@ -20,8 +20,11 @@ class TabBarWidget extends StatelessWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index){
                   final dat = data[index];
-                  // final t = DateFormat.yMd(dat.published_date);
-                  // print(t);
+                 final formatter = DateFormat('yyyy-MM-dd');
+                 final date = DateTime.now();
+                  DateTime dt = DateTime.parse(dat.published_date);
+              //   final d =  DateFormat.yMEd().add_jms().format(dt);
+
                     return Container(
                       padding: EdgeInsets.only(left: 10, top: 10),
                       width: 350,
@@ -43,7 +46,7 @@ class TabBarWidget extends StatelessWidget {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,)),
                           SizedBox(height: 15,),
-                          Text(dat.published_date.substring(0, 10)),
+                          Text(formatter.format(dt)),
                         ],
                       ),
                     );
