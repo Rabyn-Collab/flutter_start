@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_projects_start/models/news.dart';
 import 'package:flutter_projects_start/services/news_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,5 +22,25 @@ class SearchNewsProvider extends StateNotifier<List<News>>{
   }
 
 
+  Future<void>  searchNews(String query) async{
+    state = [];
+    final response = await NewsService.getNews(query: query);
+    state = response;
+
+  }
+
+
 }
 
+
+final proProvider = ChangeNotifierProvider((ref) => ProgressProvider());
+class ProgressProvider extends ChangeNotifier{
+
+  double value = 0.0;
+
+  void changeValue(double val){
+     value = val;
+     notifyListeners();
+  }
+
+}

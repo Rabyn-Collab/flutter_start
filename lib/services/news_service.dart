@@ -20,12 +20,21 @@ class NewsService{
           }
         ));
 
-        final data = (response.data['articles'] as List).map((e) => News.fromJson(e)).toList();
-        return data;
+        if(response.data['status'] == 'No matches for your search.'){
+          return [News(
+              title: 'No matches for your search.',
+              author: '',
+              media: '',
+              link: '',
+              published_date: '', summary:'')];
+        }else{
+          final data = (response.data['articles'] as List).map((e) => News.fromJson(e)).toList();
+          return data;
+        }
+
     }on DioError catch (e){
       print(e.message);
       throw Exception(e.message);
-
     }
 
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/news_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +35,9 @@ class TabBarWidget extends StatelessWidget {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.network(dat.media,
+                            child: CachedNetworkImage(
+                              errorWidget: (ctx, d ,string) => Image.asset('assets/noimg.jpg'),
+                             imageUrl: dat.media,
                               width: 350,
                               height: 190,
                               fit: BoxFit.cover,),

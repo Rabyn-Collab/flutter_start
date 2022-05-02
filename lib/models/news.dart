@@ -9,6 +9,7 @@ class News{
   final String published_date;
   final String summary;
   final String media;
+  final String link;
 
 
   News({
@@ -16,7 +17,8 @@ class News{
     required this.author,
     required this.media,
     required this.published_date,
-    required this.summary
+    required this.summary,
+    required this.link
 });
 
 
@@ -26,7 +28,8 @@ class News{
           author: json['author'] ?? '',
           media: json['media'] ?? 'assets/noimg.jpg',
           published_date: json['published_date'] ?? '',
-          summary: json['summary'] ?? ''
+          summary: json['summary'] ?? '',
+        link:  json['link']
       );
   }
 
