@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/counter_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +21,6 @@ class Home extends StatelessWidget {
   }
 }
 
-
 class Counter extends StatelessWidget {
 
   @override
@@ -30,44 +28,43 @@ class Counter extends StatelessWidget {
     print('build');
     return Scaffold(
         body: SafeArea(
-          child: Consumer(
-            builder: (context, ref, child) {
-            //  final number = ref.watch(counterProvider).number;
-              final number = ref.watch(counterProvider1);
-             final isLoad = ref.watch(toggleProvider).loading;
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('$number', style: TextStyle(fontSize: 50),),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            ref.read(counterProvider1.notifier).state++;
-                      // ref.read(counterProvider).increment();
-                      // ref.read(toggleProvider).toggle();
-                          }, child: isLoad ? CircularProgressIndicator(): Text('add')
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            ref.read(counterProvider).decrement();
-                            ref.read(toggleProvider).toggle();
-                          }, child: Text('minus')),
-                    ],
-                  )
                 ],
-              );
-            }
-          ),
+                begin: Alignment.centerLeft,
+                end: Alignment.bottomRight
+              )
+            ),
+            width: double.infinity,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final number = ref.watch(counterProvider).number;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('$number', style: TextStyle(fontSize: 50),),
+                    TextButton(
+                        onPressed: () {
+                      ref.read(counterProvider).increment();
+                        },
+                        child: Text('increment', style: TextStyle(fontSize: 50))
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          ref.read(counterProvider).decrement();
+                        },
+                        child: Text('decrement', style: TextStyle(fontSize: 50))
+                    )
+                  ],
+                );
+              }
+            ),
+          )
         )
     );
   }
 }
-
-
-
-
-
-
