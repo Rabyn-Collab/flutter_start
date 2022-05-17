@@ -25,16 +25,13 @@ class MovieService{
           'language': 'en-US',
           'page': 1
         });
-        print(response2.data);
      prefs.setString('data', jsonEncode(response2.data['results']));
 
       }
      final data = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
      return data;
     }on DioError catch (err){
-
        final data =  prefs.getString('data');
-       print(data);
        final decodeData = (jsonDecode(data!) as List).map((e) => Movie.fromJson(e)).toList();
        return decodeData;
 

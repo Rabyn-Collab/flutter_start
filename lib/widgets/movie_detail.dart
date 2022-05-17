@@ -56,8 +56,11 @@ class MovieDetail extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(movie.title, style: TextStyle(fontSize: 20),),
+                      Container(
+                          width: 300,
+                          child: Text(movie.title, style: TextStyle(fontSize: 20),maxLines: 2,)),
                       Text(movie.release_date)
                     ],
                   ),

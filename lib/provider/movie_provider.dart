@@ -55,9 +55,8 @@ class MovieProvider extends StateNotifier<MovieState>{
     getData();
   }
 
-  void loadMore(String apiPath){
+  void loadMore(){
     state = state.copyWith(
-        movies: [],
         searchText: '',
         page:  state.page + 1
     );
