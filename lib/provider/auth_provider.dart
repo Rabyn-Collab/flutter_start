@@ -1,0 +1,64 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+
+
+
+final userStream =  StreamProvider((ref) => FirebaseAuth.instance.authStateChanges());
+final authProvider = Provider((ref) => AuthProvider());
+
+
+
+class AuthProvider{
+
+
+    CollectionReference userDB = FirebaseFirestore.instance.collection('users');
+
+
+  Future<void> userLogin() async{
+
+  }
+
+
+  Future<String> userSignUp({required String username,
+    required String email, required String password, required XFile image}) async{
+
+       try{
+         // final imageId = DateTime.now().toIso8601String();
+         final ref =  FirebaseStorage.instance.ref().child('userImages/${image.name}');
+         final imageFile = File(image.path);
+         await ref.putFile(imageFile);
+         final imageUrl = await ref.getDownloadURL();
+         final userData =  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+
+         await userDB.add({
+           'username': username,
+           'userImage': imageUrl,
+           'email': email,
+           'userId': userData.user!.uid
+         });
+       return 'success';
+       }on FirebaseAuthException catch (err){
+          return '${err.message}';
+       }
+
+
+
+  }
+
+
+    Future<void> userLogOut() async{
+         try{
+         await FirebaseAuth.instance.signOut();
+         }on FirebaseAuthException catch (err){
+            print(err);
+         }
+    }
+
+
+
+}

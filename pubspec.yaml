@@ -36,13 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.4
   get: ^4.6.3
   flutter_riverpod: ^1.0.4
-  dio: ^4.0.6
-  intl: ^0.17.0
-  keyboard_dismisser: ^2.0.1
-  youtube_player_flutter: ^8.0.0
-  cached_network_image: ^3.2.1
-  flutter_offline: ^2.1.0
-  shared_preferences: ^2.0.15
+  firebase_core: ^1.17.0
+  firebase_auth: ^3.3.18
+  cloud_firestore: ^3.1.15
+  image_picker: ^0.8.5+3
+  firebase_storage: ^10.2.16
 
 dev_dependencies:
   flutter_test:
