@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 
 
-final userStream =  StreamProvider((ref) => FirebaseAuth.instance.authStateChanges());
+final userStream =  StreamProvider.autoDispose((ref) => FirebaseAuth.instance.authStateChanges());
 final authProvider = Provider((ref) => AuthProvider());
 
 
@@ -19,8 +19,14 @@ class AuthProvider{
     CollectionReference userDB = FirebaseFirestore.instance.collection('users');
 
 
-  Future<void> userLogin() async{
+  Future<String> userLogin({required String email, required String password}) async{
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+       return 'success';
+    }on FirebaseAuthException catch (err){
+      return '${err.message}';
 
+    }
   }
 
 

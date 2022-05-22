@@ -71,6 +71,7 @@ class AuthScreen extends StatelessWidget {
                     }
                     return null;
                   },
+                  obscureText: true,
                   decoration: InputDecoration(
                       hintText: 'password'
                   ),
@@ -94,8 +95,20 @@ class AuthScreen extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async{
                       _form.currentState!.save();
+                      FocusScope.of(context).unfocus();
                       if(_form.currentState!.validate()){
                         if(isLogin){
+                          final response = await ref.read(authProvider).userLogin(
+                              email: mailController.text.trim(),
+                              password: passwordController.text.trim()
+                          );
+                       if(response != 'success') {
+                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                             duration: Duration(seconds: 1),
+                             content: Text(response)
+                         ));
+                       }
 
                         }else{
                          if(image == null){
@@ -115,7 +128,7 @@ class AuthScreen extends StatelessWidget {
                        if(response != 'success'){
                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                             duration: Duration(milliseconds: 500),
+                             duration: Duration(seconds: 1),
                              content: Text(response)
                          ));
                        }

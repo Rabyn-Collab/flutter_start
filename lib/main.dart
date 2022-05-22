@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_projects_start/screens/main_screen.dart';
 import 'package:flutter_projects_start/screens/status_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -25,10 +22,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  StatusScreen(),
+      home: StatusScreen(),
     );
   }
 }
+
+
+
+
+
 
 //
 //
