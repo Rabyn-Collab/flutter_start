@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/provider/crud_provider.dart';
+import 'package:flutter_projects_start/widgets/drawer_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -17,14 +18,9 @@ class MainScreen extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Colors.purple,
               title: Text('FireApp'),
-              actions: [
-                TextButton(onPressed: () {
-                  ref.read(authProvider).userLogOut();
-                },
-                    child: Text(
-                      'Log Out', style: TextStyle(color: Colors.white),))
-              ],
+
             ),
+            drawer: DrawerWidget(),
             body: ListView(
               children: [
                 Container(
