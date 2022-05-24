@@ -78,34 +78,38 @@ class CreateScreen extends StatelessWidget {
                         onPressed: () async{
                           _form.currentState!.save();
                           FocusScope.of(context).unfocus();
-                          if(_form.currentState!.validate()){
-                            if(image == null){
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  duration: Duration(milliseconds: 500),
-                                  content: Text('please select an image')
-                              ));
-                            }else{
-                              final response = await ref.read(crudProvider).postAdd(
-                                  title: titleController.text.trim(),
+                          if(_form.currentState!.validate()) {
+                            if (image == null) {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      duration: Duration(milliseconds: 500),
+                                      content: Text('please select an image')
+                                  ));
+                            } else {
+                              final response = await ref.read(crudProvider)
+                                  .postAdd(
+                                  title: titleController.text.trimLeft(),
                                   description: descController.text.trim(),
                                   userId: id,
                                   image: image
                               );
-                              if(response != 'success') {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    duration: Duration(seconds: 1),
-                                    content: Text(response)
-                                ));
-                              }else{
+                              if (response != 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        duration: Duration(seconds: 1),
+                                        content: Text(response)
+                                    ));
+                              } else {
                                 Navigator.of(context).pop();
                               }
                             }
-
-
-
                           }
+
+
 
                         }, child: Text('Submit')
                     ),

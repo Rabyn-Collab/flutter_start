@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_projects_start/model/post.dart';
 import 'package:flutter_projects_start/model/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,8 @@ final userSingleStream =
     StreamProvider.autoDispose((ref) => CrudProvider().getSingleUserData);
 
 final crudProvider = Provider((ref) => CrudProvider());
+
+final postStream = StreamProvider((ref) => CrudProvider().getPostData);
 
 class CrudProvider {
   CollectionReference userDB = FirebaseFirestore.instance.collection('users');
@@ -26,7 +29,7 @@ class CrudProvider {
     try {
       final imageId = image.name;
       final ref =
-          FirebaseStorage.instance.ref().child('userImages/${image.name}');
+          FirebaseStorage.instance.ref().child('postImages/${image.name}');
       final imageFile = File(image.path);
       await ref.putFile(imageFile);
       final imageUrl = await ref.getDownloadURL();
@@ -45,6 +48,34 @@ class CrudProvider {
       return '${err.message}';
     }
   }
+
+
+
+  Stream<List<Post>> get getPostData {
+    return postDB.snapshots().map((event) => getPost(event));
+  }
+
+  List<Post> getPost(QuerySnapshot snapshot) {
+    return   snapshot.docs.map((e) {
+      final data = e.data() as Map<String, dynamic>;
+      return Post(
+          like: Like.fromJson(data['like']),
+          imageUrl: data['imageUrl'],
+          title: data['title'],
+          comments: (data['comments'] as List).map((e) => Comments.fromJson(e)).toList(),
+          description: data['description'],
+          imageId: data['imageId'],
+          postId: e.id,
+          userId: data['userId']
+      );
+    }).toList();
+  }
+
+
+
+
+
+
 
   Stream<List<Users>> get getUserData {
     return userDB.snapshots().map((event) => getUser(event));

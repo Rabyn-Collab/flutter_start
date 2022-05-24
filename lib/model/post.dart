@@ -44,7 +44,7 @@ class Like{
 
   factory Like.fromJson(Map<String, dynamic> json){
     return Like(
-        usernames: json['usernames'],
+        usernames: (json['usernames'] as List).map((e) => e as String).toList(),
         likes: json['likes']
     );
   }
