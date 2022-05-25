@@ -21,6 +21,7 @@ class CrudProvider {
   CollectionReference userDB = FirebaseFirestore.instance.collection('users');
   CollectionReference postDB = FirebaseFirestore.instance.collection('posts');
 
+  // post add in postDB
   Future<String> postAdd(
       {required String title,
       required String description,
@@ -49,8 +50,59 @@ class CrudProvider {
     }
   }
 
+  // post update in postDB
+  Future<String> postUpdate({required String title, required String description, required String postId,
+     XFile? image, String? imageId }) async {
+    try {
+
+      if(image == null){
+       await postDB.doc(postId).update({
+         'title': title,
+         'description': description
+       });
+      }else{
+        final ref = FirebaseStorage.instance.ref().child('postImages/$imageId');
+        await ref.delete();
+        final newImageId = image.name;
+        final ref1 = FirebaseStorage.instance.ref().child('postImages/$newImageId');
+        final imageFile = File(image.path);
+        await ref1.putFile(imageFile);
+        final imageUrl = await ref1.getDownloadURL();
+        await postDB.doc(postId).update({
+          'title': title,
+          'description': description,
+          'imageUrl': imageUrl,
+          'imageId': newImageId
+        });
+
+      }
+
+      return 'success';
+    } on FirebaseException catch (err) {
+      return '${err.message}';
+    }
+  }
 
 
+  // post remove in postDB
+
+  Future<String> postRemove({required String postId, required String imageId }) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('postImages/$imageId');
+      await ref.delete();
+      await postDB.doc(postId).delete();
+      return 'success';
+    } on FirebaseException catch (err) {
+      return '${err.message}';
+    }
+  }
+
+
+
+
+
+
+  // fetch postData from postDB
   Stream<List<Post>> get getPostData {
     return postDB.snapshots().map((event) => getPost(event));
   }
@@ -75,7 +127,7 @@ class CrudProvider {
 
 
 
-
+  // fetch userData from userDB
 
   Stream<List<Users>> get getUserData {
     return userDB.snapshots().map((event) => getUser(event));
@@ -87,6 +139,7 @@ class CrudProvider {
         .toList();
   }
 
+  // fetch  single userData from userDB
   Stream<Users> get getSingleUserData {
     final id = FirebaseAuth.instance.currentUser!.uid;
     final user = userDB.where('userId', isEqualTo: id).snapshots();

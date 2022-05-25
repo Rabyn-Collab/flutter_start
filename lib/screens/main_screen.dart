@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/provider/crud_provider.dart';
+import 'package:flutter_projects_start/screens/edit_screen.dart';
 import 'package:flutter_projects_start/widgets/drawer_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 
 class MainScreen extends StatelessWidget {
@@ -80,7 +82,39 @@ class MainScreen extends StatelessWidget {
                                                     padding: EdgeInsets.zero, // and this
                                                   ),
                                                   onPressed: (){
+                                             Get.defaultDialog(
+                                               title: 'Customize Post',
+                                               content: Text('edit or remove your post'),
+                                               actions: [
+                                                 IconButton(
+                                                     onPressed: (){
+                                                       Navigator.of(context).pop();
+                                                        Get.to(() => EditScreen(dat), transition:  Transition.leftToRight);
+                                                 }, icon: Icon(Icons.edit)),
+                                                 IconButton(
+                                                     onPressed: (){
+                                                       Navigator.of(context).pop();
 
+                                                       Get.defaultDialog(
+                                                           title: 'Remove Post',
+                                                           content: Text('Are you sure you want to remove this post'),
+                                                           actions: [
+                                                             TextButton(
+                                                                 onPressed: (){
+                                                                   Navigator.of(context).pop();
+
+                                                                 }, child: Text('yes')),
+                                                             TextButton(
+                                                                 onPressed: (){
+                                                                   Navigator.of(context).pop();
+
+                                                                 }, child: Text('no')),
+                                                           ]
+                                                       );
+
+                                                     }, icon: Icon(Icons.delete))
+                                               ]
+                                             );
                                                   },
                                                   child: Icon(Icons.more_vert)
                                               )
