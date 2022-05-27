@@ -99,7 +99,31 @@ class CrudProvider {
 
 
 
+//like post
 
+  Future<String> addLike({required String postId, required Like like}) async {
+    try {
+      await postDB.doc(postId).update({
+        'like': like.toJson()
+      });
+      return 'success';
+    } on FirebaseException catch (err) {
+      return '${err.message}';
+    }
+  }
+
+  //add comment to post
+
+  Future<String> addComment({required String postId, required Comments comments}) async {
+    try {
+      await postDB.doc(postId).update({
+        'comments': FieldValue.arrayUnion([comments.toJson()]),
+      });
+      return 'success';
+    } on FirebaseException catch (err) {
+      return '${err.message}';
+    }
+  }
 
 
   // fetch postData from postDB
