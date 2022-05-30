@@ -1,10 +1,10 @@
 import 'dart:io';
-
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_projects_start/model/post.dart';
-import 'package:flutter_projects_start/model/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,9 +13,10 @@ final usersStream =
 final userSingleStream =
     StreamProvider.autoDispose((ref) => CrudProvider().getSingleUserData);
 
+final roomStream = StreamProvider.autoDispose((ref) => FirebaseChatCore.instance.rooms());
 final crudProvider = Provider((ref) => CrudProvider());
 
-final postStream = StreamProvider((ref) => CrudProvider().getPostData);
+final postStream = StreamProvider.autoDispose((ref) => CrudProvider().getPostData);
 
 class CrudProvider {
   CollectionReference userDB = FirebaseFirestore.instance.collection('users');
@@ -153,25 +154,41 @@ class CrudProvider {
 
   // fetch userData from userDB
 
-  Stream<List<Users>> get getUserData {
+  Stream<List<types.User>> get getUserData {
     return userDB.snapshots().map((event) => getUser(event));
   }
 
-  List<Users> getUser(QuerySnapshot snapshot) {
+  List<types.User> getUser(QuerySnapshot snapshot) {
     return snapshot.docs
-        .map((e) => Users.fromJson((e.data() as Map<String, dynamic>)))
+        .map((e){
+          final user = e.data() as Map<String, dynamic>;
+       return types.User(
+         id: e.id,
+         createdAt: (user['createdAt'] as Timestamp).millisecondsSinceEpoch,
+         firstName: user['firstName'],
+         imageUrl: user['imageUrl'],
+         metadata: user['metadata']
+       );
+    }
+    )
         .toList();
   }
 
   // fetch  single userData from userDB
-  Stream<Users> get getSingleUserData {
+  Stream<types.User> get getSingleUserData {
     final id = FirebaseAuth.instance.currentUser!.uid;
-    final user = userDB.where('userId', isEqualTo: id).snapshots();
+    final user = userDB.doc(id).snapshots();
     return user.map((event) => getSingle(event));
   }
 
-  Users getSingle(QuerySnapshot snapshot) {
-    final singleData = snapshot.docs[0].data() as Map<String, dynamic>;
-    return Users.fromJson(singleData);
+  types.User getSingle(DocumentSnapshot snapshot) {
+    final user = snapshot.data() as Map<String, dynamic>;
+    return types.User(
+        id: snapshot.id,
+        createdAt: (user['createdAt'] as Timestamp).millisecondsSinceEpoch,
+        firstName: user['firstName'],
+        imageUrl: user['imageUrl'],
+        metadata: user['metadata']
+    );
   }
 }

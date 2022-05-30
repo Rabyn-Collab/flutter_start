@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_start/model/post.dart';
-import 'package:flutter_projects_start/model/user.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_projects_start/provider/auth_provider.dart';
 import 'package:flutter_projects_start/provider/crud_provider.dart';
 import 'package:flutter_projects_start/screens/detail_screen.dart';
 import 'package:flutter_projects_start/screens/edit_screen.dart';
+import 'package:flutter_projects_start/screens/recent_chats.dart';
 import 'package:flutter_projects_start/widgets/drawer_widget.dart';
+import 'package:flutter_projects_start/widgets/user_detail.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +17,7 @@ class MainScreen extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser;
 
-  late Users currentUser;
+  late types.User currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,14 @@ class MainScreen extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Colors.purple,
               title: Text('FireApp'),
+              actions: [
+                TextButton(
+                    onPressed: (){
+                      Get.to(() => RecentChats(), transition: Transition.leftToRight);
+                    }, child: Text('Recent Chats', style: TextStyle(
+                  color: Colors.white
+                ),))
+              ],
 
             ),
             drawer: DrawerWidget(),
@@ -36,8 +46,8 @@ class MainScreen extends StatelessWidget {
                  height: 150,
                   child: userData.when(
                       data: (data){
-                        final otherData = data.where((element) => element.userId != user!.uid).toList();
-                        currentUser = data.firstWhere((element) => element.userId == user!.uid);
+                        final otherData = data.where((element) => element.id != user!.uid).toList();
+                        currentUser = data.firstWhere((element) => element.id == user!.uid);
                         return  ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: otherData.length,
@@ -46,12 +56,17 @@ class MainScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(
                                   children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: NetworkImage(otherData[index].userImage),
+                                  InkWell(
+                                    onTap: (){
+                                      Get.to(() => UserDetail(otherData[index]), transition: Transition.leftToRight);
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(otherData[index].imageUrl!),
+                                    ),
                                   ),
                                     SizedBox(height: 7,),
-                                    Text(otherData[index].username),
+                                    Text(otherData[index].firstName!),
                                   ],
                                 ),
                               );
@@ -151,7 +166,7 @@ class MainScreen extends StatelessWidget {
                                                   children: [
                                                     IconButton(
                                                         onPressed: (){
-                                                          if(dat.like.usernames.contains(currentUser.username)){
+                                                          if(dat.like.usernames.contains(currentUser.firstName!)){
                                                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                               duration: Duration(milliseconds:700),
@@ -163,7 +178,7 @@ class MainScreen extends StatelessWidget {
                                                           }else{
                                                             final newLike = Like(
                                                                 likes: dat.like.likes + 1,
-                                                                usernames: [...dat.like.usernames,currentUser.username ]
+                                                                usernames: [...dat.like.usernames,currentUser.firstName! ]
                                                             );
 
                                                             ref.read(crudProvider).addLike(postId: dat.postId, like: newLike);

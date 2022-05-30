@@ -3,14 +3,14 @@ import 'package:flutter_projects_start/model/post.dart';
 import 'package:flutter_projects_start/model/user.dart';
 import 'package:flutter_projects_start/provider/crud_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 
 
 
 class DetailScreen extends StatelessWidget {
  final Post post;
- final Users user;
+ final types.User user;
  DetailScreen(this.post, this.user);
 final commentController = TextEditingController();
 
@@ -46,9 +46,9 @@ final commentController = TextEditingController();
                         ),
                         onFieldSubmitted: (val) {
                           final newComment = Comments(
-                              username: user.username,
+                              username: user.firstName!,
                               comment: val,
-                              imageUrl: user.userImage
+                              imageUrl: user.imageUrl!
                           );
                           ref.read(crudProvider).addComment(postId: post.postId,
                               comments: newComment);

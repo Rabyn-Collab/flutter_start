@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
                     children: [
                   DrawerHeader(
                       decoration: BoxDecoration(
-                        image: DecorationImage(image: NetworkImage(data.userImage),
+                        image: DecorationImage(image: NetworkImage(data.imageUrl!),
                           colorFilter: ColorFilter.mode(
                               Colors.black12,
                               BlendMode.darken
@@ -29,12 +29,12 @@ class DrawerWidget extends StatelessWidget {
                           fit: BoxFit.cover
                         ),
                       ),
-                      child: Text(data.email),
+                      child: Text(data.metadata!['email']),
                   ),
 
                       ListTile(
                         leading: Icon(Icons.info),
-                        title: Text(data.username),
+                        title: Text(data.firstName!),
                       ),
                       ListTile(
                         onTap: (){
